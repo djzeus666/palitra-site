@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Админка — Русская Палитра</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="adm-login" data-login>
+    <div class="adm-login__card">
+      <p class="adm-kicker">Организаторам</p>
+      <h1>Админка сайта</h1>
+      <p>Правки текстов, цен и номинаций сохраняются в этом браузере и сразу видны на сайте.</p>
+      <form data-login-form>
+        <label>PIN
+          <input name="pin" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="adm-hint">По умолчанию: <code>palitra</code>. После входа PIN можно сменить во вкладке «Событие».</p>
+        <p class="adm-error" data-login-error hidden>Неверный PIN</p>
+        <button class="adm-btn adm-btn--gold" type="submit">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="adm-app" data-app hidden>
+    <header class="adm-top">
+      <div>
+        <p class="adm-kicker">Русская Палитра</p>
+        <h1>Редактор сайта</h1>
+      </div>
+      <p class="adm-status" data-status>Готово</p>
+      <div class="adm-top__actions">
+        <a class="adm-btn adm-btn--ghost" href="index.html" target="_blank" rel="noopener">Открыть сайт</a>
+        <button class="adm-btn adm-btn--ghost" type="button" data-logout>Выйти</button>
+      </div>
+    </header>
+
+    <nav class="adm-tabs" data-tabs aria-label="Разделы админки">
+      <button type="button" class="is-on" data-tab="settings">Событие</button>
+      <button type="button" data-tab="copy">Тексты и кнопки</button>
+      <button type="button" data-tab="categories">Направления</button>
+      <button type="button" data-tab="nominations">Номинации</button>
+      <button type="button" data-tab="packages">Пакеты и цены</button>
+      <button type="button" data-tab="blocks">Блоки главной</button>
+      <button type="button" data-tab="faq">FAQ</button>
+      <button type="button" data-tab="docs">Документы</button>
+      <button type="button" data-tab="apps">Заявки</button>
+      <button type="button" data-tab="backup">Экспорт</button>
+    </nav>
+
+    <main class="adm-main">
+      <section class="adm-panel" data-panel="settings">
+        <h2>Событие, контакты, фонд, MAX</h2>
+        <p class="adm-lead">Эти поля подставляются в шапку, подвал, благотворительный блок и ссылки на бота.</p>
+        <div class="adm-grid">
+          <label class="adm-field"><span>Название события</span><input data-bind="event.name"></label>
+          <label class="adm-field"><span>Город</span><input data-bind="event.city"></label>
+          <label class="adm-field"><span>Регион</span><input data-bind="event.region"></label>
+          <label class="adm-field"><span>Гео (Урал)</span><input data-bind="event.geo"></label>
+          <label class="adm-field"><span>Площадка</span><input data-bind="event.venue"></label>
+          <label class="adm-field"><span>Адрес площадки</span><input data-bind="event.venueAddress"></label>
+          <label class="adm-field"><span>Начало (дата и время)</span><input data-bind="event.start"></label>
+          <label class="adm-field"><span>Конец</span><input data-bind="event.end"></label>
+          <label class="adm-field"><span>Часовой пояс</span><input data-bind="event.timezone"></label>
+          <label class="adm-field"><span>Телефон</span><input data-bind="contacts.phone" placeholder="+7 …"></label>
+          <label class="adm-field"><span>Ссылка tel:</span><input data-bind="contacts.phoneHref" placeholder="tel:+79…"></label>
+          <label class="adm-field"><span>Email</span><input data-bind="contacts.email" type="email"></label>
+          <label class="adm-field"><span>Подпись поддержки</span><input data-bind="contacts.supportLabel"></label>
+          <label class="adm-field"><span>ИП / юрлицо</span><input data-bind="legal.entity"></label>
+          <label class="adm-field"><span>ИНН</span><input data-bind="legal.inn"></label>
+          <label class="adm-field"><span>ОГРНИП</span><input data-bind="legal.ogrnip"></label>
+          <label class="adm-field"><span>Стартовый взнос, ₽</span><input data-bind="fees.selection" data-type="number" type="number" min="0"></label>
+          <label class="adm-field"><span>Помощь детям, ₽</span><input data-bind="charity.amountRub" data-type="number" type="number" min="0"></label>
+          <label class="adm-field"><span>Помощь детям, %</span><input data-bind="charity.percent" data-type="number" type="number" min="0"></label>
+          <label class="adm-field"><span>Как показывать помощь</span>
+            <select data-bind="charity.displayMode">
+              <option value="amount">Сумма в рублях</option>
+              <option value="percent">Процент</option>
+            </select>
+          </label>
+          <label class="adm-field"><span>Наименование фонда</span><input data-bind="charity.fundName"></label>
+          <label class="adm-field"><span>Имя MAX-бота</span><input data-bind="max.botName"></label>
+          <label class="adm-field"><span>База ссылки MAX</span><input data-bind="max.base"></label>
+          <label class="adm-field"><span>Счётчик Метрики</span><input data-bind="analytics.ymCounter" data-type="number" type="number" min="0"></label>
+          <label class="adm-field"><span>UTM source</span><input data-bind="utmDefaults.utm_source"></label>
+          <label class="adm-field"><span>UTM medium</span><input data-bind="utmDefaults.utm_medium"></label>
+          <label class="adm-field"><span>UTM campaign</span><input data-bind="utmDefaults.utm_campaign"></label>
+          <label class="adm-field"><span>PIN админки</span><input data-bind="admin.pin" type="password" autocomplete="new-password"></label>
+        </div>
+        <h3>Организаторы (блок на главной)</h3>
+        <div data-repeat="organizers"></div>
+      </section>
+
+      <section class="adm-panel" data-panel="copy" hidden>
+        <h2>Тексты и кнопки</h2>
+        <p class="adm-lead">Заголовки, подзаголовки и подписи кнопок на главной и в шапке.</p>
+        <div class="adm-grid" data-copy-form></div>
+      </section>
+
+      <section class="adm-panel" data-panel="categories" hidden>
+        <h2>Направления</h2>
+        <p class="adm-lead">Категории на главной. Число номинаций пересчитывается само. Цена «от» — нижняя граница в карточке.</p>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="category">Добавить направление</button></p>
+        <div data-repeat="categories"></div>
+      </section>
+
+      <section class="adm-panel" data-panel="nominations" hidden>
+        <h2>Номинации</h2>
+        <p class="adm-lead">Списки — по одной строке. Если код (slug) пустой, он соберётся из названия латиницей.</p>
+        <div class="adm-toolbar">
+          <label class="adm-field adm-field--grow"><span>Выбрать номинацию</span>
+            <select data-nom-select></select>
+          </label>
+          <button class="adm-btn adm-btn--wine" type="button" data-add="nomination">Новая</button>
+          <button class="adm-btn adm-btn--ghost" type="button" data-del="nomination">Удалить</button>
+        </div>
+        <div data-nom-editor></div>
+      </section>
+
+      <section class="adm-panel" data-panel="packages" hidden>
+        <h2>Пакеты партнёров, бюджеты, доп. опции</h2>
+        <h3>Категории бюджета</h3>
+        <div data-repeat="partnerTiers"></div>
+        <h3>Пакеты</h3>
+        <div class="adm-toolbar">
+          <label class="adm-field adm-field--grow"><span>Выбрать пакет</span>
+            <select data-pack-select></select>
+          </label>
+          <button class="adm-btn adm-btn--wine" type="button" data-add="package">Новый пакет</button>
+          <button class="adm-btn adm-btn--ghost" type="button" data-del="package">Удалить</button>
+        </div>
+        <div data-pack-editor></div>
+        <h3>Дополнительные опции</h3>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="extra">Добавить опцию</button></p>
+        <div data-repeat="extras"></div>
+      </section>
+
+      <section class="adm-panel" data-panel="blocks" hidden>
+        <h2>Почему участвовать, призы, этапы</h2>
+        <h3>Почему участвовать</h3>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="benefit">Добавить причину</button></p>
+        <div data-repeat="benefits"></div>
+        <h3>Подарки и призы</h3>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="gift">Добавить уровень</button></p>
+        <div data-repeat="gifts"></div>
+        <h3>Этапы</h3>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="stage">Добавить этап</button></p>
+        <div data-repeat="stages"></div>
+      </section>
+
+      <section class="adm-panel" data-panel="faq" hidden>
+        <h2>Вопросы и ответы</h2>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-add="faq">Добавить вопрос</button></p>
+        <div data-repeat="faq"></div>
+      </section>
+
+      <section class="adm-panel" data-panel="docs" hidden>
+        <h2>Документы</h2>
+        <p class="adm-lead">Пустые строки между абзацами делят текст. Заголовки страниц — отдельные поля.</p>
+        <div class="adm-grid">
+          <label class="adm-field adm-field--wide"><span>Заголовок положения</span><input data-bind="docs.polozhenieTitle"></label>
+          <label class="adm-field adm-field--wide"><span>Текст положения</span><textarea data-bind="docs.polozhenie" rows="10"></textarea></label>
+          <label class="adm-field adm-field--wide"><span>Заголовок политики ПД</span><input data-bind="docs.politikaTitle"></label>
+          <label class="adm-field adm-field--wide"><span>Текст политики</span><textarea data-bind="docs.politika" rows="10"></textarea></label>
+          <label class="adm-field adm-field--wide"><span>Заголовок согласия</span><input data-bind="docs.soglasieTitle"></label>
+          <label class="adm-field adm-field--wide"><span>Текст согласия</span><textarea data-bind="docs.soglasie" rows="10"></textarea></label>
+        </div>
+      </section>
+
+      <section class="adm-panel" data-panel="apps" hidden>
+        <h2>Заявки партнёров</h2>
+        <p class="adm-lead">Форма на странице «Партнёрам» пишет сюда. Данные только в этом браузере — для продакшена выгружайте JSON.</p>
+        <div class="adm-toolbar">
+          <button class="adm-btn adm-btn--ghost" type="button" data-export-apps>Скачать JSON</button>
+          <button class="adm-btn adm-btn--ghost" type="button" data-clear-apps>Очистить заявки</button>
+        </div>
+        <div class="adm-table-wrap" data-apps-table></div>
+      </section>
+
+      <section class="adm-panel" data-panel="backup" hidden>
+        <h2>Экспорт и сброс</h2>
+        <p class="adm-lead">Скачайте JSON после правок. На другом компьютере вставьте файл и нажмите «Загрузить». Сброс возвращает тексты из кода сайта.</p>
+        <div class="adm-toolbar">
+          <button class="adm-btn adm-btn--gold" type="button" data-export>Скачать сайт JSON</button>
+          <button class="adm-btn adm-btn--ghost" type="button" data-reset>Сбросить к исходным текстам</button>
+        </div>
+        <label class="adm-field"><span>Вставить JSON</span>
+          <textarea data-import-json rows="12" spellcheck="false"></textarea>
+        </label>
+        <p><button class="adm-btn adm-btn--wine" type="button" data-import>Загрузить JSON</button></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

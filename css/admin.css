@@ -1,0 +1,314 @@
+/* Админка «Русская Палитра» — та же палитра, рабочий стол редактора */
+
+:root {
+  --ink: #16110e;
+  --muted: #6d635a;
+  --paper: #f3ece3;
+  --paper-2: #e8dfd2;
+  --white: #fbf7f1;
+  --wine: #6e1c28;
+  --wine-deep: #3d0e16;
+  --gold: #b0893a;
+  --gold-2: #c9a45a;
+  --line: rgba(22, 17, 14, 0.14);
+  --ok: #2c4a40;
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Manrope", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.25rem; margin-top: 1.75rem; }
+
+p { margin: 0 0 0.8rem; }
+
+code {
+  font-size: 0.9em;
+  background: var(--paper-2);
+  padding: 0.05em 0.35em;
+}
+
+.adm-kicker {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.adm-lead {
+  color: var(--muted);
+  max-width: 42rem;
+}
+
+.adm-hint {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.adm-error {
+  color: var(--wine);
+  font-weight: 600;
+}
+
+.adm-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(176, 137, 58, 0.18), transparent 40%),
+    linear-gradient(180deg, var(--wine-deep), #1a0c0e 40%, var(--paper));
+}
+
+.adm-login__card {
+  width: min(28rem, 100%);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent);
+  padding: 1.75rem;
+}
+
+.adm-login__card h1 {
+  color: var(--wine);
+}
+
+.adm-app {
+  min-height: 100vh;
+}
+
+.adm-top {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--wine-deep);
+  color: var(--white);
+  border-bottom: 1px solid var(--gold-2);
+}
+
+.adm-top h1 {
+  color: var(--white);
+  font-size: 1.55rem;
+}
+
+.adm-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--gold-2);
+  text-align: right;
+}
+
+.adm-top__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.adm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  background: #2a1014;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.adm-tabs button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #e8dfd2;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.adm-tabs button.is-on {
+  color: var(--gold-2);
+  border-bottom-color: var(--gold-2);
+  background: rgba(201, 164, 90, 0.08);
+}
+
+.adm-main {
+  padding: 1.25rem 1.25rem 4rem;
+  max-width: 78rem;
+}
+
+.adm-panel[hidden],
+[hidden] {
+  display: none !important;
+}
+
+.adm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+.adm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.adm-field--grow {
+  flex: 1;
+}
+
+.adm-field span {
+  font-weight: 600;
+}
+
+.adm-field input,
+.adm-field textarea,
+.adm-field select,
+.adm-login input {
+  font: inherit;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 0.55rem 0.65rem;
+  width: 100%;
+}
+
+.adm-field textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+
+.adm-field--wide {
+  grid-column: 1 / -1;
+}
+
+.adm-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.adm-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.adm-btn--gold {
+  background: var(--gold);
+  color: var(--wine-deep);
+}
+
+.adm-btn--wine {
+  background: var(--wine);
+  color: var(--white);
+}
+
+.adm-btn--ghost {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+  color: inherit;
+}
+
+.adm-btn--danger {
+  background: transparent;
+  border-color: var(--wine);
+  color: var(--wine);
+}
+
+.adm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+  margin: 0.75rem 0 1rem;
+}
+
+.adm-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 1rem;
+  margin: 0.75rem 0;
+}
+
+.adm-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.adm-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.adm-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.adm-table-wrap th,
+.adm-table-wrap td {
+  text-align: left;
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.adm-table-wrap th {
+  background: var(--paper-2);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 800px) {
+  .adm-top {
+    grid-template-columns: 1fr;
+  }
+  .adm-status {
+    text-align: left;
+  }
+}

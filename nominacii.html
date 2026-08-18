@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Направления и номинации — Русская Палитра, Екатеринбург</title>
+  <meta name="description" content="Выберите направление «Русской Палитры»: парикмахеры, мужской зал, ногти, авторы одежды, выход на сцену, командное и конкурс для всех. Екатеринбург, 27 сентября 2026.">
+  <link rel="canonical" href="https://russkaya-palitra.ru/nominacii/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="wrap header__inner">
+      <a class="logo" href="index.html">
+        <span class="logo__mark">Русская Палитра</span>
+        <span class="logo__sub">Екатеринбург · 27.09.2026</span>
+      </a>
+      <nav class="nav" aria-label="Основное">
+        <a href="index.html" data-copy="navHome">Главная</a>
+        <a href="nominacii.html" data-copy="navNoms">Направления</a>
+        <a href="partneram.html" data-copy="navPartners">Партнёрам</a>
+        <a href="index.html#faq" data-copy="navFaq">Вопросы</a>
+      </nav>
+      <div class="header__actions">
+        <a class="btn btn--wine" data-max-payload="participant_site" href="#" data-copy="headerCta">Участвовать</a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-label="Меню">☰</button>
+      </div>
+    </div>
+    <div class="nav-drawer" data-drawer>
+      <div class="wrap">
+        <a href="index.html" data-copy="navHome">Главная</a>
+        <a href="nominacii.html" data-copy="navNoms">Направления</a>
+        <a href="partneram.html" data-copy="navPartners">Партнёрам</a>
+        <a href="index.html#faq" data-copy="navFaq">Вопросы</a>
+        <a href="partneram.html#zayavka" data-copy="navBecomePartner">Стать партнёром</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="nom-hero">
+      <div class="hero__lights" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="contest-kicker" data-copy="nomsKicker">Программа конкурса</p>
+        <p class="ticket"><span>Слой 2</span><span>Выбор категории</span></p>
+        <h1 data-copy="nomsPageTitle">Направления</h1>
+        <p class="hero__sub" data-copy="nomsPageSub">Откройте категорию, затем номинацию. Регистрация — только на странице конкретной номинации, с QR и кодом направления.</p>
+        <div class="btn-row">
+          <a class="btn btn--gold" href="#parikmahery" data-copy="nomsCtaList">К номинациям</a>
+          <a class="btn btn--light" data-max-payload="participant_site" href="#" data-copy="nomsCtaMax">Регистрация в MAX</a>
+          <a class="btn btn--ghost" href="partneram.html" data-copy="navPartners">Партнёрам</a>
+        </div>
+      </div>
+    </section>
+    <div data-categories-page></div>
+    <section class="section cta-final">
+      <div class="wrap">
+        <p class="section__index" data-copy="nomsFinalIndex">Регистрация</p>
+        <h2 class="section__title" data-copy="nomsFinalTitle">Готовы к номинации?</h2>
+        <p class="section__lead" data-copy="nomsFinalLead">Выберите направление выше, откройте карточку и зарегистрируйтесь в MAX. Или вернитесь на главную.</p>
+        <div class="btn-row">
+          <a class="btn btn--gold" data-max-payload="participant_site" href="#" data-copy="nomsCtaMax">Регистрация в MAX</a>
+          <a class="btn btn--light" href="index.html" data-copy="nomsFinalHome">На главную</a>
+          <a class="btn btn--ghost" href="partneram.html" data-copy="ctaBecomePartner">Стать партнёром</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p><a href="index.html">Русская Палитра</a> · Екатеринбург · ЦК «Урал» · 27 сентября 2026</p>
+      <p><a href="polozhenie.html" data-track="document">Положение</a> · <a href="politika.html">Политика ПД</a></p>
+    </div>
+  </footer>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

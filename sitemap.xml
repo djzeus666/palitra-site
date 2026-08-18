@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://russkaya-palitra.ru/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/parikmahery/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/muzhskoj-zal/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/nogti/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/avtory-odezhdy/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/vyhod-na-scenu/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/komandnoe/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/nominacii/dlya-vseh/</loc><priority>0.8</priority></url>
+  <url><loc>https://russkaya-palitra.ru/partneram/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://russkaya-palitra.ru/dokumenty/polozhenie/</loc><priority>0.4</priority></url>
+  <url><loc>https://russkaya-palitra.ru/dokumenty/politika/</loc><priority>0.3</priority></url>
+  <url><loc>https://russkaya-palitra.ru/dokumenty/soglasie/</loc><priority>0.3</priority></url>
+</urlset>
