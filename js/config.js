@@ -31,7 +31,8 @@ window.RP_CONFIG = {
   },
   fees: {
     selection: 500,
-    nomination: [2500, 3000, 3500],
+    creativeUnit: 500,
+    proTiers: { 1: 3500, 2: 3000, 3: 2500 },
   },
   charity: {
     amountRub: 100,
@@ -80,13 +81,13 @@ window.RP_CONFIG = {
     whyTitle: "Почему участвовать",
     whyLead: "Шесть причин, которые остаются с вами независимо от места в протоколе.",
     allTitle: "Конкурс для всех",
-    allLead: "Участвовать можно без профессии в сфере красоты и одежды. Текст, рисунок, фото, видео — отдельная ветка с тем же стартовым взносом 500 ₽.",
+    allLead: "Участвует любой человек вне бьюти и fashion — просто любой желающий. Текст, рисунок, фото, видео — отдельная ветка с тем же стартовым взносом 500 ₽.",
     nomTitle: "Направления",
-    nomLead: "Сначала категория, затем список номинаций, затем карточка с правилами и регистрацией. На главной — только выбор направления.",
+    nomLead: "Сначала категория, затем список номинаций. В MAX-боте можно выбрать несколько специальностей и из каждой — несколько номинаций; стоимость суммируется.",
     giftTitle: "Подарки и призы",
     stepsTitle: "Этапы конкурса",
-    juryTitle: "Организаторы события",
-    juryLead: "Состав звёздных гостей и жюри по номинациям публикуется в админке и на этой странице по мере подтверждения.",
+    juryTitle: "Звёздные гости",
+    juryLead: "Люди сцены «Русской Палитры». Состав дополняется по мере подтверждения.",
     partnerTitle: "Партнёрам",
     partnerLead: "Аудитория мастеров, моделей, гостей и покупателей Урала. Крупное партнёрство — сцена и эксклюзив. Доступные форматы — маркет, спикер, жюри, коллаборация.",
     contactsTitle: "Организаторы и поддержка",
@@ -125,7 +126,7 @@ window.RP_CONFIG = {
     qrCaption: "Наведите камеру: общая регистрация участника",
     nomsKicker: "Программа конкурса",
     nomsPageTitle: "Направления",
-    nomsPageSub: "Откройте категорию, затем номинацию. Регистрация — только на странице конкретной номинации, с QR и кодом направления.",
+    nomsPageSub: "Откройте категорию и номинацию. В MAX-боте можно выбрать несколько специальностей и номинаций в одной заявке.",
     nomsCtaList: "К номинациям",
     nomsCtaMax: "Регистрация в MAX",
     nomsFinalIndex: "Регистрация",
@@ -167,7 +168,10 @@ window.RP_CONFIG = {
     nomOkTitle: "Допустимо",
     nomBadTitle: "Недопустимо",
     nomPriceIndex: "Цена и призы",
-    nomPriceLead: "Стартовый взнос отбора оплачивается отдельно на этапе заявки. Дедлайн подачи:",
+    nomPriceLead: "Стартовый взнос отбора оплачивается отдельно на этапе заявки. Можно добавить несколько номинаций в MAX — цена считается по количеству. Дедлайн подачи:",
+    nomPriceNote: "Проф. номинации: 1 — 3 500 ₽, 2 — по 3 000 ₽, 3 и более — по 2 500 ₽. Творческий конкурс — 500 ₽ за каждую номинацию.",
+    nomsPricingTitle: "Как считается оплата номинаций",
+    nomsPricingLead: "На этапе 2 в MAX-боте выбираете специальности и номинации. Профессиональные и творческие номинации считаются отдельно, итог суммируется.",
     nomMaxTitle: "Зарегистрироваться через MAX",
     nomMaxLead: "Кнопка и QR несут код этой номинации.",
     nomMaxCta: "Открыть MAX-бот",
@@ -187,6 +191,80 @@ window.RP_CONFIG = {
 };
 
 window.RP = {
+  formatRub(amount) {
+    return Number(amount).toLocaleString("ru-RU") + " ₽";
+  },
+  proNominationUnitPrice(count) {
+    const tiers = window.RP_CONFIG.fees.proTiers;
+    const n = Math.max(0, count);
+    if (n <= 1) return tiers[1];
+    if (n === 2) return tiers[2];
+    return tiers[3];
+  },
+  categoryFromPrice(cat) {
+    const fees = window.RP_CONFIG.fees;
+    if (cat.creative) return fees.creativeUnit;
+    return fees.proTiers[3];
+  },
+  nominationListPrice(nom) {
+    const fees = window.RP_CONFIG.fees;
+    if (nom.creative) return this.formatRub(fees.creativeUnit);
+    return "от " + this.formatRub(fees.proTiers[3]);
+  },
+  nominationDetailPrice(nom) {
+    const fees = window.RP_CONFIG.fees;
+    if (nom.creative) return this.formatRub(fees.creativeUnit);
+    return this.formatRub(fees.proTiers[1]);
+  },
+  nominationPriceNote(nom) {
+    const fees = window.RP_CONFIG.fees;
+    if (nom.creative) {
+      return "Каждая номинация творческого конкурса — " + this.formatRub(fees.creativeUnit) + ". Можно выбрать несколько.";
+    }
+    return (
+      "Можно выбрать несколько специальностей и номинаций в MAX. Проф. номинации: 1 — " +
+      this.formatRub(fees.proTiers[1]) +
+      ", 2 — " +
+      this.formatRub(fees.proTiers[2]) +
+      " каждая, 3 и более — " +
+      this.formatRub(fees.proTiers[3]) +
+      " каждая."
+    );
+  },
+  pricingRulesText() {
+    const fees = window.RP_CONFIG.fees;
+    return (
+      "Проф. номинации: 1 — " +
+      this.formatRub(fees.proTiers[1]) +
+      ", 2 — " +
+      this.formatRub(fees.proTiers[2]) +
+      " каждая, 3 и более — " +
+      this.formatRub(fees.proTiers[3]) +
+      " каждая. Творческий конкурс — " +
+      this.formatRub(fees.creativeUnit) +
+      " за номинацию. Можно выбрать несколько специальностей — сумма складывается."
+    );
+  },
+  calculateNominationsTotal(items) {
+    const fees = window.RP_CONFIG.fees;
+    const creative = items.filter(function (i) {
+      return i.creative;
+    });
+    const pro = items.filter(function (i) {
+      return !i.creative;
+    });
+    const proUnit = pro.length ? this.proNominationUnitPrice(pro.length) : 0;
+    const creativeTotal = creative.length * fees.creativeUnit;
+    const proTotal = proUnit * pro.length;
+    return {
+      creativeCount: creative.length,
+      proCount: pro.length,
+      proUnit: proUnit,
+      creativeTotal: creativeTotal,
+      proTotal: proTotal,
+      total: creativeTotal + proTotal,
+    };
+  },
   maxUrl(payload) {
     const cfg = window.RP_CONFIG;
     const params = new URLSearchParams(window.location.search);

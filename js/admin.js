@@ -238,8 +238,18 @@
     if (phone && window.RP_CONFIG.contacts && !window.RP_CONFIG.contacts.phoneHref) {
       window.RP_CONFIG.contacts.phoneHref = "tel:" + String(phone).replace(/[^\d+]/g, "");
     }
-    window.RP_STORE.save();
-    setStatus("Сохранено в этом браузере. Откройте сайт, чтобы проверить.");
+    var result = window.RP_STORE.save();
+    if (result && typeof result.then === "function") {
+      result.then(function (info) {
+        if (info && info.remote) {
+          setStatus("Сохранено на сайте. Обновите страницу сайта (Ctrl+F5).");
+        } else {
+          setStatus("Сервер недоступен: пока только в этом браузере.");
+        }
+      });
+    } else {
+      setStatus("Сохранено. Обновите страницу сайта.");
+    }
   }
 
   function persistSoon() {
@@ -895,7 +905,7 @@
     renderStages();
     renderFaq();
     renderApps();
-    setStatus("Можно править. Сохранение — автоматически.");
+    setStatus("Можно править. Сохранение на сайт — автоматически.");
   }
 
   function boot() {
@@ -911,6 +921,7 @@
         return;
       }
       sessionStorage.setItem(SESSION, "1");
+      sessionStorage.setItem("rp_admin_pin", pin);
       showApp();
     });
 
@@ -1019,28 +1030,33 @@
     });
     $("[data-import]").addEventListener("click", function () {
       try {
-        window.RP_STORE.restore($("[data-import-json]").value);
-        location.reload();
+        var restored = window.RP_STORE.restore($("[data-import-json]").value);
+        Promise.resolve(restored).then(function () {
+          location.reload();
+        });
       } catch (err) {
         alert("Не удалось прочитать JSON");
       }
     });
     $("[data-reset]").addEventListener("click", function () {
       if (!confirm("Вернуть все тексты и цены к исходным из кода сайта? Заявки не трогаем.")) return;
-      window.RP_STORE.reset();
-      location.reload();
+      Promise.resolve(window.RP_STORE.reset()).then(function () {
+        location.reload();
+      });
     });
     $("[data-export-apps]").addEventListener("click", function () {
       download("russkaya-palitra-zayavki.json", JSON.stringify(window.RP_STORE.getApps(), null, 2));
     });
     $("[data-clear-apps]").addEventListener("click", function () {
       if (!confirm("Удалить все заявки из этого браузера?")) return;
-      window.RP_STORE.clearApps();
-      renderApps();
+      Promise.resolve(window.RP_STORE.clearApps()).then(function () {
+        renderApps();
+      });
     });
 
     if (sessionStorage.getItem(SESSION) === "1") showApp();
   }
 
-  boot();
+  if (window.RP_STORE && window.RP_STORE.whenReady) window.RP_STORE.whenReady(boot);
+  else boot();
 })();

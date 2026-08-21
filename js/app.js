@@ -157,11 +157,43 @@
 
   function renderPeople() {
     const box = $("[data-people]");
-    if (!box || !window.RP_CONFIG || !window.RP_CONFIG.organizers) return;
-    const name = (window.RP_CONFIG.event && window.RP_CONFIG.event.name) || "Русская Палитра";
-    box.innerHTML = window.RP_CONFIG.organizers
-      .map((p) => `<article class="person"><h3>${esc(p.name)}</h3><p>${esc(p.role || "Организатор")} «${esc(name)}»</p></article>`)
+    if (!box) return;
+    const guests = (window.RP_DATA && window.RP_DATA.guests) || [];
+    const organizers = (window.RP_CONFIG && window.RP_CONFIG.organizers) || [];
+    const eventName = (window.RP_CONFIG.event && window.RP_CONFIG.event.name) || "Русская Палитра";
+
+    const guestCards = guests
+      .map((g) => {
+        const points = (g.points || [])
+          .map((item) => `<li>${esc(item)}</li>`)
+          .join("");
+        const media = g.photo
+          ? `<img class="guest-card__photo" src="${esc(g.photo)}" alt="${esc(g.name)}" width="160" height="160">`
+          : `<div class="guest-card__avatar" aria-hidden="true"><span>${esc(g.initials || "?")}</span></div>`;
+        return `<article class="guest-card">
+          <div class="guest-card__media">${media}</div>
+          <div class="guest-card__body">
+            <p class="guest-card__badge">${esc(g.role || "Звёздный гость")}</p>
+            <h3 class="guest-card__name">${esc(g.name)}</h3>
+            <p class="guest-card__title">${esc(g.title || "")}</p>
+            ${points ? `<ul class="guest-card__points">${points}</ul>` : ""}
+          </div>
+        </article>`;
+      })
       .join("");
+
+    const orgCards = organizers
+      .map(
+        (p) =>
+          `<article class="person"><h3>${esc(p.name)}</h3><p>${esc(p.role || "Организатор")} «${esc(eventName)}»</p></article>`
+      )
+      .join("");
+
+    box.innerHTML =
+      (guestCards ? `<div class="guests">${guestCards}</div>` : "") +
+      (orgCards
+        ? `<div class="people people--org">${orgCards}</div>`
+        : "");
   }
 
   function bindMaxLinks() {
@@ -251,7 +283,6 @@
           <h3>${esc(c.title)}</h3>
           <p>${esc(c.teaser)}</p>
           <div class="card-nom__foot">
-            <span class="card-nom__price">от ${Number(c.fromPrice).toLocaleString("ru-RU")} ₽</span>
             <span>Смотреть →</span>
           </div>
         </a>`;
@@ -381,7 +412,21 @@
     $("[data-nom-fits]").textContent = nom.fits;
     $("[data-nom-prepare]").textContent = nom.prepare;
     $("[data-nom-onsite]").textContent = nom.onsite;
-    $("[data-nom-price]").textContent = nom.price.toLocaleString("ru-RU") + " ₽";
+    $$("[data-nom-price]").forEach(function (el) {
+      el.textContent = window.RP.nominationDetailPrice(nom);
+    });
+    const priceNote = $("[data-nom-price-note]");
+    if (priceNote) priceNote.textContent = window.RP.nominationPriceNote(nom);
+    const priceTitle = $("[data-nom-price-title]");
+    if (priceTitle) {
+      priceTitle.textContent = nom.creative
+        ? "Стоимость номинации творческого конкурса"
+        : "Стоимость проф. номинации (при одной в заявке)";
+    }
+    const priceBadge = $("[data-nom-price-badge]");
+    if (priceBadge) {
+      priceBadge.textContent = nom.creative ? "Творческий конкурс · " : "Проф. номинация · ";
+    }
     $("[data-nom-deadline]").textContent = nom.deadline;
     $("[data-nom-model]").textContent = nom.requirements.model;
     $("[data-nom-costume]").textContent = nom.requirements.costume;
@@ -406,6 +451,7 @@
   function categoryPage() {
     const root = $("[data-categories-page]");
     if (!root) return;
+
     const hash = (location.hash || "").replace("#", "");
     window.RP_DATA.categories.forEach((cat) => {
       const section = document.createElement("section");
@@ -416,7 +462,7 @@
         .map((n) => {
           const href = "nominaciya.html?slug=" + encodeURIComponent(n.slug);
           return `<a class="card-nom" href="${esc(href)}">
-            <div class="card-nom__top"><span>${esc(cat.title)}</span><span>${Number(n.price).toLocaleString("ru-RU")} ₽</span></div>
+            <div class="card-nom__top"><span>${esc(cat.title)}</span></div>
             <h3>${esc(n.title)}</h3>
             <p>${esc(n.hero)}</p>
             <div class="card-nom__foot"><span>Условия и регистрация</span><span>→</span></div>
@@ -593,44 +639,49 @@
       .join("");
   }
 
-  applyCms();
-  menu();
-  fillCharity();
-  roleSwitch();
-  renderBenefits();
-  renderGifts();
-  renderStages();
-  renderPeople();
-  renderNominationCards("[data-nom-grid]");
-  renderPackages("[data-pack-grid]", "all");
-  renderFAQ();
-  nominationPage();
-  categoryPage();
-  extras();
-  partnerJourney();
-  partnerForm();
-  fillPhoneLinks();
-  bindMaxLinks();
-  bindPhone();
-  bindDocs();
+  function start() {
+    applyCms();
+    menu();
+    fillCharity();
+    roleSwitch();
+    renderBenefits();
+    renderGifts();
+    renderStages();
+    renderPeople();
+    renderNominationCards("[data-nom-grid]");
+    renderPackages("[data-pack-grid]", "all");
+    renderFAQ();
+    nominationPage();
+    categoryPage();
+    extras();
+    partnerJourney();
+    partnerForm();
+    fillPhoneLinks();
+    bindMaxLinks();
+    bindPhone();
+    bindDocs();
 
-  const packFilter = $("[data-pack-filter]");
-  if (packFilter) {
-    $$("button", packFilter).forEach((btn) => {
-      btn.addEventListener("click", () => {
-        $$("button", packFilter).forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        renderPackages("[data-pack-grid]", btn.dataset.filter);
-        bindMaxLinks();
+    const packFilter = $("[data-pack-filter]");
+    if (packFilter) {
+      $$("button", packFilter).forEach((btn) => {
+        btn.addEventListener("click", () => {
+          $$("button", packFilter).forEach((b) => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          renderPackages("[data-pack-grid]", btn.dataset.filter);
+          bindMaxLinks();
+        });
       });
-    });
+    }
+
+    if (window.QRCode) fillMaxQr();
+    else {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js";
+      s.onload = fillMaxQr;
+      document.head.appendChild(s);
+    }
   }
 
-  if (window.QRCode) fillMaxQr();
-  else {
-    const s = document.createElement("script");
-    s.src = "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js";
-    s.onload = fillMaxQr;
-    document.head.appendChild(s);
-  }
+  if (window.RP_STORE && window.RP_STORE.whenReady) window.RP_STORE.whenReady(start);
+  else start();
 })();
